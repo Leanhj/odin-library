@@ -24,34 +24,49 @@ function addBookToLibrary(book) {
 
 // --- Display books in page function ---
 
-function displayBooks() {
+function render() {
     const libraryDiv = document.querySelector(".library");
     const booksArray = document.createElement("div");
     booksArray.className = "books-array";
 
-    myLibrary.forEach(element => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const cardTitle = document.createElement("div");
-        const cardAuthor = document.createElement("div");
-        const cardPages = document.createElement("div");
-        const cardRead = document.createElement("button");
-        cardTitle.textContent = element.title;
-        cardAuthor.textContent = element.author;
-        cardPages.textContent = element.pages;
-        if (element.read) {
-            cardRead.textContent = "Read";
-        } else {
-            cardRead.textContent = "Not Read";
-        }
-        card.appendChild(cardTitle);
-        card.appendChild(cardAuthor);
-        card.appendChild(cardPages);
-        card.appendChild(cardRead);
-        booksArray.appendChild(card);
-    });
+    for (let i = 0; i < myLibrary.length; i++) {
+        createBookCard(booksArray, myLibrary[i], i);
+    }
 
     libraryDiv.replaceChildren(booksArray);
+}
+
+function createBookCard(bookNodes, book, idx) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const cardTitle = document.createElement("div");
+    const cardAuthor = document.createElement("div");
+    const cardPages = document.createElement("div");
+    const cardRead = document.createElement("button");
+    const cardRemove = document.createElement("button");
+    cardRemove.textContent = "Remove";
+    cardRemove.className = "remove";
+
+    cardTitle.textContent = book.title;
+    cardAuthor.textContent = book.author;
+    cardPages.textContent = book.pages;
+    if (book.read) {
+        cardRead.textContent = "Read";
+    } else {
+        cardRead.textContent = "Not Read";
+    }
+
+    cardRemove.addEventListener("click", () => {
+        myLibrary.splice(idx, 1);
+        render();
+    });
+
+    card.appendChild(cardTitle);
+    card.appendChild(cardAuthor);
+    card.appendChild(cardPages);
+    card.appendChild(cardRead);
+    card.appendChild(cardRemove);
+    bookNodes.appendChild(card);
 }
 
 // --- New book dialog ---
@@ -78,7 +93,7 @@ form.addEventListener("submit", (e) => {
 
     const formDataObj = Object.fromEntries(myFormData.entries());
     console.log(formDataObj);
-    // dialog.close();
+    dialog.close();
 
     let readValue;
     if (formDataObj.hasOwnProperty("book-read")) {
@@ -92,7 +107,7 @@ form.addEventListener("submit", (e) => {
                             readValue);
 
     myLibrary.push(newBook);
-    displayBooks();
+    render();
 });
 
 const book1 = new Book("Artemis Fowl", "Eoin Colfer", 250, true);
@@ -102,4 +117,4 @@ const book3 = new Book("La Ciudad de las Bestias", "Isabel Allende", 200, true);
 myLibrary.push(book1);
 myLibrary.push(book2);
 myLibrary.push(book3);
-displayBooks();
+render();
