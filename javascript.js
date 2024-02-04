@@ -14,6 +14,9 @@ function Book(title, author, pages, read) {
             return `${this.title} by ${this.author}, ${this.pages} pages, not read yet`;
         }
     };
+    this.readStatus = function() {
+        this.read = !(this.read);
+    }
 }
 
 // --- Add book to library function ---
@@ -42,7 +45,9 @@ function createBookCard(bookNodes, book, idx) {
     const cardTitle = document.createElement("div");
     const cardAuthor = document.createElement("div");
     const cardPages = document.createElement("div");
+    const buttonsContainer = document.createElement("div");
     const cardRead = document.createElement("button");
+    cardRead.classList = "read-button";
     const cardRemove = document.createElement("button");
     cardRemove.textContent = "Remove";
     cardRemove.className = "remove";
@@ -52,8 +57,10 @@ function createBookCard(bookNodes, book, idx) {
     cardPages.textContent = book.pages;
     if (book.read) {
         cardRead.textContent = "Read";
+        cardRead.className = "read";
     } else {
         cardRead.textContent = "Not Read";
+        cardRead.className = "not-read";
     }
 
     cardRemove.addEventListener("click", () => {
@@ -61,11 +68,17 @@ function createBookCard(bookNodes, book, idx) {
         render();
     });
 
+    cardRead.addEventListener("click", () => {
+        book.readStatus();
+        render();
+    });
+
     card.appendChild(cardTitle);
     card.appendChild(cardAuthor);
     card.appendChild(cardPages);
-    card.appendChild(cardRead);
-    card.appendChild(cardRemove);
+    buttonsContainer.appendChild(cardRead);
+    buttonsContainer.appendChild(cardRemove);
+    card.appendChild(buttonsContainer);
     bookNodes.appendChild(card);
 }
 
