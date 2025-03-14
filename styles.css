@@ -68,6 +68,12 @@ button:hover {
     border: 1px solid var(--accent);
 }
 
+button:disabled {
+    background-color: var(--background);
+    border: 1px solid var(--background);
+    cursor: default;
+}
+
 .new-book {
     background-color: var(--primary);
     border: 1px solid var(--secondary);

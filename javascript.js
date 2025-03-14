@@ -144,6 +144,25 @@ form.addEventListener("submit", (e) => {
     render();
 });
 
+const titleField = document.getElementById("book-title");
+const authorField = document.getElementById("book-author");
+const pagesField = document.getElementById("book-pages");
+const addBookButton = document.querySelector(".add-book");
+
+function checkFormValidity() {
+    if (titleField.validity.valueMissing || authorField.validity.valueMissing || pagesField.validity.valueMissing) {
+        addBookButton.disabled = true;
+    } else {
+        addBookButton.disabled = false;
+    }
+}
+
+window.onload = () => {
+    titleField.oninput = checkFormValidity;
+    authorField.oninput = checkFormValidity;
+    pagesField.oninput = checkFormValidity;
+}
+
 const book1 = new Book("Artemis Fowl", "Eoin Colfer", 250, true);
 const book2 = new Book("The Hobbit", "J.R.R. Tolkien", 400, false);
 const book3 = new Book("La Ciudad de las Bestias", "Isabel Allende", 200, true);
